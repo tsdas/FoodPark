@@ -40,20 +40,20 @@
             Items
           </a>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Veg</a>
-            <a class="dropdown-item" href="#">Non-veg</a>
-            <a class="dropdown-item" href="#">Others</a>
-            <a class="dropdown-item" href="#">Today's Special</a>
+            <a class="dropdown-item" href="browse_food.php?category=veg">Veg</a>
+            <a class="dropdown-item" href="browse_food.php?category=non-veg">Non-veg</a>
+            <a class="dropdown-item" href="browse_food.php?category=other">Others</a>
+            <a class="dropdown-item" href="browse_food.php?category=ts">Today's Special</a>
           </div>
         </li>
 
 
         <li class="nav-item">
-          <a class="nav-link" href="about.php">About</a>
+          <a class="nav-link" href="#">About</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="contact.php">Contact</a>
+          <a class="nav-link" href="#">Log in</a>
         </li>
 
       </ul>

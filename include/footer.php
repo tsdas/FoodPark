@@ -14,6 +14,6 @@
 <footer>
 	<div class="text-center text-muted bg-dark">
 		<h5>&copy; 2018 FoodPark.com</h5>
-		<p>Delevoped by -- Trinayan & Zyandeep</p>
+		<p>Delevoped by -- Trinayan &amp; Zyandeep</p>
 	</div>
 </footer>
