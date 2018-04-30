@@ -8,34 +8,38 @@
     $ph_no = $_POST['ph_no'];
     $password = $_POST['password'];
     $address = $_POST['address'];
+    $c_password = $_POST['c_password'];
     
-    // Check whether the customer's registered successfully
-    $is_ok = false;
-
-
-    // Hash the password
-    $password = password_hash($password, PASSWORD_DEFAULT);
-
-    // Prepare an insert statement's template
-    $sql = "INSERT INTO customer (name, address, phone_no, password) VALUES (?, ?, ?, ?)";
-
-    if ($stmt = mysqli_prepare($link, $sql)) {
-
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ssss", $name, $address, $ph_no, $password);
-
-        // Execute the query
-        mysqli_stmt_execute($stmt);
-
-        // Everything is OK
-        $is_ok = true;
+    if ($password !== $c_password) {
+        $err_pswd = "Sorry, the passwords are not equal.";
+        $is_ok = false;
     }
-    else{
-        // Redirect user to db error page
+    else {
+
+        // Hash the password
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
+        // Prepare an insert statement's template
+        $sql = "INSERT INTO customer (name, address, phone_no, password) VALUES (?, ?, ?, ?)";
+
+        if ($stmt = mysqli_prepare($link, $sql)) {
+
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "ssss", $name, $address, $ph_no, $password);
+
+            // Execute the query
+            mysqli_stmt_execute($stmt);
+
+            // Everything is OK
+            $is_ok = true;
+        }
+        else{
+            // Redirect user to db error page
+        }
+        
+        mysqli_stmt_close($stmt);
+        mysqli_close($link);
     }
-    
-    mysqli_stmt_close($stmt);
-    mysqli_close($link);
     
   }
 
@@ -83,7 +87,7 @@
              <div class="col-md-3"></div>
 
              <div class="col-md-6">
-               <h3 class="text-center bg-primary text-white"> Customer Registration </h3>
+               <h3 class="text-center bg-info text-white"> Customer Registration </h3>
 
                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
                    <div class="form-group">
@@ -99,12 +103,22 @@
                      <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="password" required="required">
                    </div>
                    <div class="form-group">
+                     <label for="cpwd" class="font-weight-bold">Confirm Password:</label>
+                     <input type="password" class="form-control" id="cpwd" placeholder="Confirm password" name="c_password" required="required" aria-describedby="passwordHelpBlock">
+                     
+                     <small id="passwordHelpBlock" class="form-text text-danger">
+                        <?php echo !empty($err_pswd) ? $err_pswd : ''; ?>
+                     </small> 
+    
+
+                   </div>
+                   <div class="form-group">
                      <label for="addrs" class="font-weight-bold">Address:</label>
-                     <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required"></textarea>
+                     <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required" rows="3"></textarea>
                    </div>
 
-                   <input class="btn btn-primary" type="submit" name="submit" value="Submit">
-                   <input class="btn btn-primary" type="reset" value="Reset">
+                   <input class="btn btn-info" type="submit" name="submit" value="Submit">
+                   <input class="btn btn-info" type="reset" value="Reset">
                </form>
              </div>
              

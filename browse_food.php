@@ -1,5 +1,6 @@
 <?php 
     require_once 'include/dbcon.php';
+
     session_start();
 
     if (isset($_GET['category'])) {
@@ -25,15 +26,6 @@
 
             mysqli_free_result($result);
             mysqli_close($link);
-
-
-             /* while($row = mysqli_fetch_assoc($result)){
-                  echo $row['im_id'] . '<br>';
-                  echo $row['i_name'] . '<br>';
-                  echo $row['category'] . '<br>';
-                  echo $row['price'] . '<br>';
-                  echo '<img src="' . "$row[image]".     '">';
-              }*/
        } 
        else{
           // Redirect user to db error page
@@ -62,46 +54,97 @@
       
       <?php 
         require 'include/header.php';
-        if (empty($_SESSION["c_id"])):
+        if (empty($_SESSION["c_id"]) ):
       ?>
 
-        <div class="alert alert-danger alert-dismissible">
+        <div class="alert alert-info alert-dismissible">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>You have to log in first to buy food</strong>
+            <strong> You must login first to buy food.</strong>  
         </div>
-           
+    
        <?php endif; ?> 
 
 
-      <table class="table table-hover">
-          <thead class="thead-light">
-              <tr>
-                  <th>Image</th>
-                  <th>Item</th>
-                  <th>Price</th>
-              </tr>
-          </thead>
-          <tbody>
-              
-              <?php if (isset($rows)): 
-                    foreach ($rows as $row) :
-              ?>
-                
-                <tr>
-                    <td> <?php echo '<img src="' . "$row[4]".     '">';?></td>
-                    <td> <?php echo $row[1]; ?></td>
-                    <td> <?php echo $row[3]; ?></td>
+       <?php if (!empty($rows)): ?> 
 
-                </tr>
+       <div class="container">
+           <div class="row">
 
-              <? 
-                 endforeach;
-                endif; 
-              ?>
+            <?php if(isset($_SESSION["c_id"])): ?>
 
-          </tbody>
-      </table>
+               <div class="col-sm-9">
+            
+            <?php endif; ?>
 
+                        <div class="table-responsive">
+
+                          <table class="table table-hover">
+                              <thead class="thead-dark">
+                                  <tr>
+                                      <th>Image</th>
+                                      <th>Item</th>
+                                      <th>Price</th>
+                                    
+                                      <?php
+                                        echo (isset($_SESSION["c_id"])) ? "<th>Quantity</th>" : ''; 
+                                       ?>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  
+                                  <?php  foreach ($rows as $row): ?>
+                                    
+                                    <tr>
+                                        <td> <?php echo '<img class="rounded" src="' . "$row[4]".'">';?></td>
+                                        <td><strong> <?php echo $row[1]; ?> </strong></td>
+                                        <td><strong>Rs. <?php echo number_format($row[3]); ?> </strong></td>
+                                        
+                                        <?php if (isset($_SESSION["c_id"])): ?>
+                                            <td>    
+                                                <form  class="form-inline" method="POST" action="bill_cal.php">
+                                                 <input type="text" class="form-control form-control-sm mr-2" name="quantity">
+
+
+                                                  <button class="btn btn-primary" type="submit" name=""> Buy Now</button>
+                                                </form>  
+                                            </td>
+                                        <?php endif; ?>
+                                               
+                                         
+                                    </tr>
+
+                                  <? endforeach; ?>
+
+                              </tbody>
+                          </table>
+                        </div>
+
+
+            <?php if(isset($_SESSION["c_id"])): ?>
+
+                </div>
+               
+                   <div class="col-sm-3">
+                       <div class="card bg-light border-info mt-2 sticky-top">
+                            <div class="card-header"> Make Final Payment </div>
+                            <div class="card-body">
+                               <a href="#" class="btn btn-primary btn-block"> Proceed </a>
+                            </div>
+                        </div>
+                   </div>
+
+            <?php endif ?>
+
+           </div>
+       </div>
+
+       <?php else: ?>
+
+           <h2 class="text-muted text-center m-5 p-5 "> No item for category 
+               <?php echo !empty($category) ? "'$category'" : ''; ?> 
+           </h2>
+
+       <?php endif; ?> 
 
 
       <?php 

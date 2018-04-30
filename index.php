@@ -18,7 +18,17 @@
     
       <?php 
         require 'include/header.php';
-      ?> 
+
+        // Check for invalid login
+        if (isset($_GET['error']) and $_GET['error'] === 'login'): ?>
+          
+          <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Oops! That was an invalid login.</strong> Try again
+          </div>
+          
+      <?php endif; ?>
+
 
       <div class="container" style="margin-top: 20px;">
         <div class="row">

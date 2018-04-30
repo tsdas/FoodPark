@@ -85,7 +85,7 @@
 
              <div class="col-md-6">
 
-               <h3 class="text-center bg-primary text-white"> Add New Item </h3>
+               <h3 class="text-center bg-info text-white"> Add New Item </h3>
 
                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data">
                    
@@ -109,11 +109,11 @@
 
                   <div class="form-group">
                     <label for="file" class="font-weight-bold">Choose the item's image to upload: </label>
-                    <input type="file" id="file" name="image" class="form-control" required="required">
+                    <input type="file" id="file" name="image" class="form-control-file" required="required">
                   </div>
                     
-                  <input class="btn btn-primary" type="submit" name="submit" value="Submit">
-                  <input class="btn btn-primary" type="reset" value="Reset">
+                  <input class="btn btn-info" type="submit" name="submit" value="Submit">
+                  <input class="btn btn-info" type="reset" value="Reset">
 
                   
                </form>

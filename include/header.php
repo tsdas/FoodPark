@@ -53,13 +53,52 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="#">Log in</a>
+          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">Log in</a>
         </li>
 
       </ul>
     </div>
-
-
   </nav>
-
+  
 </header>
+
+
+
+
+<!-- The user login modal -->
+ <div class="modal fade" id="myModal">
+   <div class="modal-dialog">
+     <div class="modal-content">
+     
+       <!-- Modal Header -->
+       <div class="modal-header">
+         <h4 class="modal-title"> Customer Login </h4>
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+       </div>
+       
+       <!-- Modal body -->
+       <div class="modal-body">
+
+            <form method="POST" action="customer_auth.php">
+                <div class="form-group">
+                  <label for="ph_no" class="font-weight-bold">Phone Number:</label>
+                  <input type="text" class="form-control form-control-sm" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required">
+                </div>
+                <div class="form-group">
+                  <label for="pwd" class="font-weight-bold">Password:</label>
+                  <input type="password" class="form-control form-control-sm" id="pwd" placeholder="Enter your password" name="password" required="required">
+                </div>
+
+                <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+            </form>
+
+       </div>
+       
+       <!-- Modal footer -->
+       <div class="modal-footer">
+            New customer? &nbsp; <a href="customer_reg.php">Click here for registration</a>
+       </div>
+       
+     </div>
+   </div>
+ </div>
