@@ -1,3 +1,6 @@
+<?php  session_start(); ?>
+
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,7 +25,7 @@
         // Check for invalid login
         if (isset($_GET['error']) and $_GET['error'] === 'login'): ?>
           
-          <div class="alert alert-danger alert-dismissible">
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <strong>Oops! That was an invalid login.</strong> Try again
           </div>

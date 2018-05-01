@@ -48,12 +48,40 @@
         <li class="nav-item">
           <a class="nav-link" href="#">About</a>
         </li>
-  
-        <li class="nav-item">
-          <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">Log in</a>
-        </li>
+        
+        
+        <?php if(isset($_SESSION['c_id'])): ?>
+
+          <li class="nav-item">
+            <a class="nav-link" href="customer_profile.php"> My Account </a>
+          </li>
+
+          <li class="nav-item">
+             <form class="form-inline" method="POST" action="customer_auth.php">
+                <button class="btn btn-secondary" name="logout" type="submit"> Log out </button>   
+             </form>
+          </li>
+
+        <?php else: ?>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#myModal">Log in</a>
+          </li>
+
+        <?php endif; ?>
   
       </ul>
+        
+
+      <?php if(isset($_SESSION['c_id'])): ?> 
+
+            <span class="navbar-text">
+                <h5 class="font-weight-bold text-capitalize">Welcome <?php echo $_SESSION['c_name']; ?></h5>
+            </span>
+
+      <?php endif; ?>
+
+
     </div>
   </nav>
   

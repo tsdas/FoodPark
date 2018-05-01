@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
 				
 
 				// Send customer to his account
-				header('Location: customer_profile.php');
+				header('Location: index.php');
 			}
 			else {
 				// Invalid login

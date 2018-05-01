@@ -54,11 +54,11 @@
       
       <?php 
         require 'include/header.php';
+        
         if (empty($_SESSION["c_id"]) ):
       ?>
 
-        <div class="alert alert-info alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <div class="alert alert-info" role="alert">
             <strong> You must login first to buy food.</strong>  
         </div>
     
@@ -144,7 +144,7 @@
                    </div>
            </div>
        </div>
-       
+
       <?php endif ?>
 
 

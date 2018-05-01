@@ -71,7 +71,7 @@
       
       if (!empty($is_ok) && $is_ok === true): ?>
 
-        <div class="alert alert-success alert-dismissible">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
           <strong>You've been registered successfully!</strong>
           Now, log in to buy food
