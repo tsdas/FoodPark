@@ -1,4 +1,7 @@
 <?php 
+  
+  // Can only access by admin
+
   require_once 'include/dbcon.php';
   require_once 'include/app_vars.php';
 
@@ -73,7 +76,7 @@
 
           <div class="alert alert-success alert-dismissible">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong> Item <?php echo $item; ?> is added! </strong> 
+            <strong> Item <?php echo "'$item'"; ?> is added! </strong> 
           </div>
 
       <?php endif; ?>
@@ -85,7 +88,7 @@
 
              <div class="col-md-6">
 
-               <h3 class="text-center bg-info text-white"> Add New Item </h3>
+               <h3 class="text-center bg-primary text-white"> Add New Item </h3>
 
                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>" enctype="multipart/form-data">
                    
@@ -112,8 +115,8 @@
                     <input type="file" id="file" name="image" class="form-control-file" required="required">
                   </div>
                     
-                  <input class="btn btn-info" type="submit" name="submit" value="Submit">
-                  <input class="btn btn-info" type="reset" value="Reset">
+                  <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+                  <input class="btn btn-primary" type="reset" value="Reset">
 
                   
                </form>

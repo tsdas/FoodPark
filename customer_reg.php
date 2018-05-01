@@ -87,7 +87,7 @@
              <div class="col-md-3"></div>
 
              <div class="col-md-6">
-               <h3 class="text-center bg-info text-white"> Customer Registration </h3>
+               <h3 class="text-center bg-primary text-white"> Customer Registration </h3>
 
                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
                    <div class="form-group">
@@ -117,8 +117,8 @@
                      <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required" rows="3"></textarea>
                    </div>
 
-                   <input class="btn btn-info" type="submit" name="submit" value="Submit">
-                   <input class="btn btn-info" type="reset" value="Reset">
+                   <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+                   <input class="btn btn-primary" type="reset" value="Reset">
                </form>
              </div>
              

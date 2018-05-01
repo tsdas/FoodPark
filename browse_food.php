@@ -65,16 +65,18 @@
        <?php endif; ?> 
 
 
-       <?php if (!empty($rows)): ?> 
+
+      <?php if(isset($_SESSION["c_id"])): ?>
 
        <div class="container">
            <div class="row">
 
-            <?php if(isset($_SESSION["c_id"])): ?>
-
                <div class="col-sm-9">
             
-            <?php endif; ?>
+       <?php endif; ?>
+
+
+                    <?php if (!empty($rows)): ?>
 
                         <div class="table-responsive">
 
@@ -119,8 +121,16 @@
                           </table>
                         </div>
 
+                    <?php else: ?>
 
-            <?php if(isset($_SESSION["c_id"])): ?>
+                        <h2 class="text-muted text-center m-5 p-5 "> No item for category 
+                            <?php echo !empty($category) ? "'$category'" : ''; ?> 
+                        </h2>
+
+                    <?php endif; ?> 
+
+
+      <?php if(isset($_SESSION["c_id"])): ?>
 
                 </div>
                
@@ -132,19 +142,10 @@
                             </div>
                         </div>
                    </div>
-
-            <?php endif ?>
-
            </div>
        </div>
-
-       <?php else: ?>
-
-           <h2 class="text-muted text-center m-5 p-5 "> No item for category 
-               <?php echo !empty($category) ? "'$category'" : ''; ?> 
-           </h2>
-
-       <?php endif; ?> 
+       
+      <?php endif ?>
 
 
       <?php 
