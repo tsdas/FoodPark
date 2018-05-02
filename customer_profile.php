@@ -25,18 +25,22 @@
         <div class="col-md-3"></div>
         
         <div class="col-md-3">
-            <div class="card">
+            <div class="card bg-light text-dark">
                <img class="card-img-top" src="img/update_user.jpg" alt="Card image" style="width:100%">
                <div class="card-body">
+                <h4 class="card-title">John Doe</h4>
+                <p class="card-text">Some example text.</p>
                  <a href="#" class="btn btn-primary">Update Profile</a>
                </div>
              </div>
         </div>
         <div class="col-md-3">
-            <div class="card">
+            <div class="card bg-light text-dark">
                <img class="card-img-top" src="img/list.png" alt="Card image" style="width:100%">
                <div class="card-body">
-                 <a href="#" class="btn btn-primary">View Orders</a>
+                    <h4 class="card-title">John Doe</h4>
+                    <p class="card-text">Some example text.</p>
+                    <a href="#" class="btn btn-primary">View Orders</a>
                </div>
              </div>
         </div>

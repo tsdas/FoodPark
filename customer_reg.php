@@ -9,10 +9,11 @@
     $password = $_POST['password'];
     $address = $_POST['address'];
     $c_password = $_POST['c_password'];
+
+    $is_ok = false;
     
     if ($password !== $c_password) {
         $err_pswd = "Sorry, the passwords are not equal.";
-        $is_ok = false;
     }
     else {
 
@@ -28,10 +29,11 @@
             mysqli_stmt_bind_param($stmt, "ssss", $name, $address, $ph_no, $password);
 
             // Execute the query
-            mysqli_stmt_execute($stmt);
+            if (mysqli_stmt_execute($stmt)) {
 
-            // Everything is OK
-            $is_ok = true;
+                // Everything is OK
+                $is_ok = true;
+            }
         }
         else{
             // Redirect user to db error page
@@ -69,12 +71,19 @@
       
       <?php require_once 'include/header.php';
       
-      if (!empty($is_ok) && $is_ok === true): ?>
+      if (isset($is_ok) and $is_ok === true): ?>
 
         <div class="alert alert-success alert-dismissible fade show" role="alert">
           <button type="button" class="close" data-dismiss="alert">&times;</button>
           <strong>You've been registered successfully!</strong>
           Now, log in to buy food
+        </div>
+
+     <?php elseif(isset($is_ok) and $is_ok === false): ?>
+
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong> The customer couldn't be registered </strong>
         </div>
 
     <?php endif; ?>
