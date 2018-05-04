@@ -12,7 +12,7 @@
     $category = $_POST['category'];
     $price = $_POST['price'];
     $pic = $_FILES['image']['name'];
-    $new_pic = date("Y-m-d h:i:s") . '_' . $pic;
+    $new_pic = date("Y-m-d h-i-s") . '_' . $pic;
 
 
     $source = $_FILES['image']['tmp_name'];
