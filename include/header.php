@@ -57,9 +57,7 @@
           </li>
 
           <li class="nav-item">
-             <form class="form-inline" method="POST" action="customer_auth.php">
-                <button class="btn btn-secondary" name="logout" type="submit"> Log out </button>   
-             </form>
+             <a class="nav-link" href="customer_auth.php?logout=true">Log out</a>
           </li>
 
         <?php else: ?>

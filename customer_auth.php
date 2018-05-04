@@ -40,7 +40,7 @@ if (isset($_POST['submit'])) {
 		// Redirect user to db error page
 	}
 }
-elseif (isset($_POST['logout'])) {
+elseif (isset($_GET['logout']) and $_GET['logout'] == true) {
 	// Starting session
 	session_start();
 
