@@ -23,9 +23,6 @@ if (isset($_POST['submit'])) {
 				$_SESSION['c_id']= $row['c_id'];
 				$_SESSION['c_name']= $row['name'];
 
-				// Create an unique order id for this session
-				
-
 				// Send customer to his account
 				header('Location: index.php');
 			}

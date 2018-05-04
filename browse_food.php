@@ -1,7 +1,7 @@
 <?php 
-    require_once 'include/dbcon.php';
-
     session_start();
+
+    require_once 'include/dbcon.php';
 
     if (isset($_GET['category'])) {
        $category = $_GET['category'];
@@ -65,6 +65,21 @@
        <?php endif; ?> 
 
 
+      
+      <?php if(isset($_GET['item_added']) and $_GET['item_added'] == "true"): ?>
+
+       <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+           <strong> Selected item is added to cart </strong>  
+       </div>
+      
+      <?php endif; ?> 
+
+
+
 
       <?php if(isset($_SESSION["c_id"])): ?>
 
@@ -103,11 +118,15 @@
                                         
                                         <?php if (isset($_SESSION["c_id"])): ?>
                                             <td>    
-                                                <form  class="form-inline" method="POST" action="bill_cal.php">
+                                                <form  class="form-inline" method="POST" action="take_order.php">
                                                  <input type="text" class="form-control form-control-sm mr-2" name="quantity">
+                                                 <input type="hidden" name="im_id" value="<?php echo $row[0];?>">
+                                                 <input type="hidden" name="i_name" value="<?php echo $row[1];?>">
+                                                 <input type="hidden" name="price" value="<?php echo $row[3];?>">
 
+                                                 <input type="hidden" name="category" value="<?php echo $category; ?>">
 
-                                                  <button class="btn btn-primary" type="submit" name=""> Buy Now</button>
+                                                  <button class="btn btn-primary" type="submit" name="buy">Order</button>
                                                 </form>  
                                             </td>
                                         <?php endif; ?>
@@ -115,7 +134,7 @@
                                          
                                     </tr>
 
-                                  <? endforeach; ?>
+                                  <?php endforeach; ?>
 
                               </tbody>
                           </table>
@@ -138,7 +157,7 @@
                        <div class="card bg-light border-info mt-2 sticky-top">
                             <div class="card-header"> Make Final Payment </div>
                             <div class="card-body">
-                               <a href="#" class="btn btn-primary btn-block"> Proceed </a>
+                               <a href="make_payment.php" class="btn btn-primary btn-block"> Proceed </a>
                             </div>
                         </div>
                    </div>
