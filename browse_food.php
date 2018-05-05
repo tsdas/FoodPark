@@ -1,7 +1,9 @@
 <?php 
-    session_start();
 
+    require_once 'include/order_class.php';
     require_once 'include/dbcon.php';
+
+    session_start();
 
     if (isset($_GET['category'])) {
        $category = $_GET['category'];
@@ -18,6 +20,7 @@
        elseif ($category == "ts") {
           $sql = "select item.im_id, i_name, category, price, image from item, todays_special where item.im_id=todays_special.im_id";
        }
+
 
        if($result = mysqli_query($link, $sql)) {
 
@@ -117,17 +120,40 @@
                                         <td><strong>Rs. <?php echo number_format($row[3]); ?> </strong></td>
                                         
                                         <?php if (isset($_SESSION["c_id"])): ?>
-                                            <td>    
-                                                <form  class="form-inline" method="POST" action="take_order.php">
-                                                 <input type="text" class="form-control form-control-sm mr-2" name="quantity">
-                                                 <input type="hidden" name="im_id" value="<?php echo $row[0];?>">
-                                                 <input type="hidden" name="i_name" value="<?php echo $row[1];?>">
-                                                 <input type="hidden" name="price" value="<?php echo $row[3];?>">
+                                            <td> 
 
-                                                 <input type="hidden" name="category" value="<?php echo $category; ?>">
+                                                <?php
 
-                                                  <button class="btn btn-primary" type="submit" name="buy">Order</button>
-                                                </form>  
+                                                    $placed = false;
+
+                                                    if(! empty($_SESSION['orders'])) {
+
+                                                        foreach ($_SESSION['orders'] as $order){
+                                                            if ($order->getID() == $row[0]) {
+                                                                $placed = true;
+                                                                break;
+                                                            }
+                                                        }
+                                                    } 
+                                                ?>
+                                                
+                                               <?php if($placed === true): ?>
+                                                    <span class="text-muted">Already ordered.</span>
+
+                                               <?php else: ?>
+
+                                                    <form  class="form-inline" method="POST" action="take_order.php">
+                                                     <input type="text" class="form-control form-control-sm mr-2" name="quantity">
+                                                     <input type="hidden" name="im_id" value="<?php echo $row[0];?>">
+                                                     <input type="hidden" name="i_name" value="<?php echo $row[1];?>">
+                                                     <input type="hidden" name="price" value="<?php echo $row[3];?>">
+
+                                                     <input type="hidden" name="category" value="<?php echo $category; ?>">
+
+                                                      <button class="btn btn-primary" type="submit" name="buy">Order</button>
+                                                    </form>
+
+                                               <?php endif; ?>                                               
                                             </td>
                                         <?php endif; ?>
                                                

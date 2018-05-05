@@ -20,6 +20,17 @@ if (isset($_GET['im_id'])) {
    }
 }
 
+if (isset($_POST['change'])) {
+    // Change the quantity of the item
+    // Need validation
+    $quantity = $_POST['quan'];
+    $index = $_POST['item_index'];
+
+    $item = $_SESSION['orders'][$index];
+
+    $item->setQuantity($quantity); 
+}
+
 
 
 ?>
@@ -84,12 +95,21 @@ if (isset($_GET['im_id'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($_SESSION['orders'] as $order): ?>
+                    <?php foreach ($_SESSION['orders'] as $key=>$order): ?>
 
                         <tr>
                             <td> <?php echo $order->getName(); ?> </td>
                             <td> Rs. <?php echo number_format($order->getPricePerItem()); ?> </td>
-                            <td> <?php echo $order->getQuantity(); ?> </td> 
+                            <td>
+                                <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+                                    <input type="text" class="form-control form-control-sm mr-2" name="quan" value="<?php echo $order->getQuantity(); ?>">
+
+                                    <input type="hidden" name="item_index" value="<?php echo $key; ?>">
+
+                                    <input class="btn btn-primary" type="submit" name="change" value="Change">
+                                </form> 
+                                 
+                            </td> 
                             <td> Rs. <?php echo number_format($order->getAmount()); ?> </td>
                             <td>
                             <a href="make_payment.php?im_id=<?php echo $order->getID(); ?>" class="btn btn-primary" role="button">

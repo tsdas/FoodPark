@@ -18,6 +18,16 @@ class Order
 		$this->amount = $this->price_per_item * $this->quantity;
 	}
 
+	public function setQuantity($quantity) {
+		$this->quantity = $quantity;
+
+		$this->calAmount();	
+	}
+
+	private function calAmount() {
+		$this->amount = $this->price_per_item * $this->quantity;
+	}
+
 	public function getID() {
 		return $this->im_id;
 	}
