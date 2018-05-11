@@ -76,7 +76,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
 
-           <strong> Selected item is added to cart </strong>  
+           <strong> Selected item has been added to cart </strong>  
        </div>
       
       <?php endif; ?> 
@@ -168,9 +168,7 @@
 
                     <?php else: ?>
 
-                        <h2 class="text-muted text-center m-5 p-5 "> No item for category 
-                            <?php echo !empty($category) ? "'$category'" : ''; ?> 
-                        </h2>
+                        <h2 class="text-muted text-center m-5 p-5 "> No item for this category </h2>
 
                     <?php endif; ?> 
 

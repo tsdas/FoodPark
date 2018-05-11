@@ -1,8 +1,8 @@
 <?php 
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'zyandeep');
-define('DB_PASSWD', '123qwe!@');
+define('DB_USER', 'root');
+define('DB_PASSWD', '');
 define('DB_NAME', 'foodpark');
 
 // Connect to the database

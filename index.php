@@ -33,6 +33,19 @@
       <?php endif; ?>
 
 
+      <?php if (isset($_GET['order']) and $_GET['order'] === 'cancel' and isset($_SESSION['orders']) === false): ?>
+          
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Your order has been canceled</strong>
+          </div>
+          
+      <?php endif; ?>
+
+
+
+
+
       <div class="container" style="margin-top: 20px;">
         <div class="row">
           

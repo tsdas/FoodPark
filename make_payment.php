@@ -1,5 +1,4 @@
 <?php 
-
 require_once 'include/order_class.php';
 require_once 'include/dbcon.php';
 
@@ -8,31 +7,22 @@ session_start();
 if (isset($_GET['im_id'])) {
     // Cancle the order of that item
    // And recalculate the bill amount
-
    foreach ($_SESSION['orders'] as $key => $order) {
         if ($order->getID() == $_GET['im_id']) {
             $_SESSION['total_amount'] -= $order->getAmount();
-
             $item_del_msg = 'Item "' . $order->getName() . '" has been removed';
-
             unset( $_SESSION['orders'][$key] );
         }
    }
 }
-
 if (isset($_POST['change'])) {
     // Change the quantity of the item
     // Need validation
     $quantity = $_POST['quan'];
     $index = $_POST['item_index'];
-
     $item = $_SESSION['orders'][$index];
-
     $item->setQuantity($quantity); 
 }
-
-
-
 ?>
 
 <!doctype html>
@@ -80,11 +70,24 @@ if (isset($_POST['change'])) {
         $total_amount = 0;    
      ?>  
 
-        <h4 class="text-muted p-3 mt-3">
-            You have ordered the following items...
-        </h4>
+        <div class="container">
+           <div class="row">
+               <div class="col-sm-8"> 
+                    <h4 class="text-dark p-3 mt-3">
+                        You have ordered the following items...
+                    </h4>
+               </div>
+               <div class="col-sm-4">
+                   <form class="form-inline" method="POST" action="generate_bill.php">
+                        <span class=" text-center bg-secondary text-white p-3 mt-3"> Ready to place the order? </span>
+                        <button type="submit" name="yes" class="btn btn-primary m-2">Yes</button>
+                        <button type="submit" name="no" class="btn btn-primary">No</button>
+                   </form>
+               </div>
+           </div>
+        </div>
         
-        <div class="table-responsive">
+        <div class="table-responsive mt-4">
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
@@ -125,14 +128,14 @@ if (isset($_POST['change'])) {
         </div>
         
 
+
         <?php 
-            // Store the total payable amount in the $_SESSION
-            $_SESSION['total_amount'] = $total_amount;
-             
+           // Store the total bill amount in the $_SESSION
+            $_SESSION['total_amount'] = $total_amount; 
         ?>
 
-
-        <h4 class="text-right text-dark p-3 mt-3"> Your total bill amount = Rs.<?php echo number_format($_SESSION['total_amount']); ?> </h4>
+        
+        <h4 class="text-right text-dark p-3 mt-3"> Your total bill amount = Rs.<?php echo number_format($total_amount); ?> </h4>
 
 
       <?php endif; ?>
