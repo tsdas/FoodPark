@@ -35,7 +35,7 @@
 
 
             // Next, insert data into bill
-            $sql = "INSERT INTO bill (o_id, c_id, total_amount, status, date) VALUES ($order_id, $_SESSION[c_id], $_SESSION[total_amount], 0, '$dat')";
+            $sql = "INSERT INTO bill (o_id, c_id, total_amount, date) VALUES ($order_id, $_SESSION[c_id], $_SESSION[total_amount], '$dat')";
 
             if(mysqli_query($link, $sql)) {
                 $placed_order = true;
