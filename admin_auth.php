@@ -18,7 +18,7 @@ require_once 'include/dbcon.php';
 				session_start();
 
 				$_SESSION['a_id']= $row['a_id'];
-				$_SESSION['user_name']= $row['user_name'];
+				$_SESSION['username']= $row['user_name'];
 
 				// Send customer to his account
 				header('Location: admin_home.php');
@@ -32,7 +32,7 @@ require_once 'include/dbcon.php';
 	}
 	
 }
-elseif (isset($_POST['logout'])) {
+elseif (isset($_GET['logout']) and $_GET['logout'] == true)  {
 	// Starting session
 	session_start();
 

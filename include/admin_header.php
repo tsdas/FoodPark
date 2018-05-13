@@ -29,13 +29,17 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
       <ul class="navbar-nav mr-auto mt-2 mt-md-0">
         <li class="nav-item">
-          <a class="nav-link" href="admin_login.php">Home</a>
+           <?php if(isset($_SESSION['a_id'])): ?>
+          <a class="nav-link" href="admin_home.php">Home</a>
+          <?php else: ?>
+             <a class="nav-link" href="admin_login.php">Home</a>
+             <?php endif; ?>
         </li>
          <?php if(isset($_SESSION['a_id'])): ?>
            <li class="nav-item">
-             <form class="form-inline" method="POST" action="customer_auth.php">
-                <button class="btn btn-secondary" name="logout" type="submit"> Log out </button>   
-             </form>
+             <li class="nav-item">
+             <a class="nav-link" href="admin_auth.php?logout=true">Log out</a>
+             </li>
           </li>
           <?php endif; ?>
   
@@ -43,10 +47,11 @@
       <?php if(isset($_SESSION['a_id'])): ?> 
 
             <span class="navbar-text">
-                <h5 class="font-weight-bold text-capitalize">Welcome <?php echo $_SESSION['user_name']; ?></h5>
+                <h5 class="font-weight-bold text-capitalize">Welcome <?php echo $_SESSION['username']; ?></h5>
             </span>
 
       <?php endif; ?>
+
 
 
     </div>
