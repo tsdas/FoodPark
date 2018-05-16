@@ -249,7 +249,7 @@
 
                 var data = $("#bill").html();
 
-                var mywindow = window.open("", "", 'height=500,width=700');
+                var mywindow = window.open("", "", 'height=500,width=800');
                 
                 mywindow.document.write("<!doctype html>");
                 mywindow.document.write('<html lang="en"><head><title>FoodPark | Print Invoice</title>');
