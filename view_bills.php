@@ -86,13 +86,16 @@
                      <th>Order ID</th>
                      <th>Date</th>
                      <th>Total Amount</th>
-                     <th>Comment</th>
+                     <th>Remark</th>
                    </tr>
               </thead>
                <tbody>
                     <?php foreach ($bills as $bill): ?>
                         <tr>
-                            <td><a href="generate_bill.php?order_id=<?php echo $bill['o_id']; ?>">Order #: <?php echo $bill['o_id']; ?></a></td>
+                            <td>
+                                <a href="generate_bill.php?order_id=<?php echo $bill['o_id']; ?>" data-toggle="tooltip" data-placement="right" title="View the bill">Order #: <?php echo $bill['o_id']; ?></a>
+                            </td>
+
                             <td> <?php echo $bill['date']; ?> </td>
                             <td> Rs. <?php echo number_format($bill['total_amount']); ?> </td>
                             <td>
@@ -126,6 +129,14 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="js/jquery.js"></script>
+    <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
   </body>
 </html>
