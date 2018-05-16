@@ -3,44 +3,59 @@
 
   if (isset($_POST['submit'])) {
 
-    // Need input validation
-    $name = $_POST['name'];
-    $ph_no = $_POST['ph_no'];
-    $password = $_POST['password'];
-    $address = $_POST['address'];
-    $c_password = $_POST['c_password'];
+    $name = trim($_POST['name']);
+    $ph_no = mysqli_real_escape_string($link, trim($_POST['ph_no']));
+    $password = trim($_POST['password']);
+    $c_password = trim($_POST['c_password']);
+    $address = trim($_POST['address']);
 
-    $is_ok = false;
-    
-    if ($password !== $c_password) {
-        $err_pswd = "Sorry, the passwords are not equal.";
+
+    // If any of the mandatory filed is empty, then flag error message
+    if (empty($name) or empty($ph_no) or empty($password) or empty($c_password) or empty($address)) {
+        $err_empty = true;
     }
-    else {
+    else 
+    {
 
-        // Hash the password
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        // Check if the phone number already exist
+        $sql="SELECT * FROM customer WHERE phone_no='$ph_no'";
 
-        // Prepare an insert statement's template
-        $sql = "INSERT INTO customer (name, address, phone_no, password) VALUES (?, ?, ?, ?)";
+        $result = mysqli_query($link, $sql)
+            or die('DB Error');
 
-        if ($stmt = mysqli_prepare($link, $sql)) {
+        if(mysqli_num_rows($result) === 0){
+            if ($password !== $c_password) {
+                $err_pswd = "The passwords didn't match";
+            }
+            else {
+                // Hash the password
+                $password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssss", $name, $address, $ph_no, $password);
+                // Prepare an insert statement's template
+                $sql = "INSERT INTO customer (name, address, phone_no, password) VALUES (?, ?, ?, ?)";
 
-            // Execute the query
-            if (mysqli_stmt_execute($stmt)) {
+                if ($stmt = mysqli_prepare($link, $sql)) {
 
-                // Everything is OK
-                $is_ok = true;
+                    // Bind variables to the prepared statement as parameters
+                    mysqli_stmt_bind_param($stmt, "ssss", $name, $address, $ph_no, $password);
+
+                    // Execute the query
+                    mysqli_stmt_execute($stmt);
+
+                    mysqli_stmt_close($stmt);
+                    mysqli_close($link);
+
+                    header("Location: index.php?cus_reg=true");
+                }
+                else{
+                    // DB Error
+                }
             }
         }
-        else{
-            // Redirect user to db error page
+        else {
+            $err_ph_exist = "This phone no. has already been registered";
         }
         
-        mysqli_stmt_close($stmt);
-        mysqli_close($link);
     }
     
   }
@@ -64,33 +79,23 @@
   </head>
 
 
-
   <body>
     
     <div class="container">
       
-      <?php require_once 'include/header.php';
-      
-      if (isset($is_ok) and $is_ok === true): ?>
+      <?php require 'include/header.php'; ?>
 
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>You've been registered successfully!</strong>
-          Now, log in to buy food
-        </div>
+      <?php if(! empty($err_empty)): ?>
 
-     <?php elseif(isset($is_ok) and $is_ok === false): ?>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>Please fill out all the required information</strong>
+          </div>
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong> The customer couldn't be registered </strong>
-        </div>
+      <?php endif; ?>
 
-    <?php endif; ?>
-    
-     
-     
-        
+ 
+       
       <div class="form-container">
         <div class="row">
              <div class="col-md-3"></div>
@@ -99,31 +104,48 @@
                <h3 class="text-center bg-primary text-white"> Customer Registration </h3>
 
                <form method="POST" action="<?php echo $_SERVER['PHP_SELF'];?>">
+
                    <div class="form-group">
                      <label for="name" class="font-weight-bold">Name:</label>
-                     <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" required="required">
+                     <span class="badge badge-pill badge-danger">Required</span>
+
+                     <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" required="required" value="<?php echo empty($name)? '' : $name; ?>">
                    </div>
+                   
                    <div class="form-group">
                      <label for="ph_no" class="font-weight-bold">Phone Number:</label>
-                     <input type="text" class="form-control" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required">
+                     <span class="badge badge-pill badge-danger">Required</span>
+
+                     <input type="text" class="form-control" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required" value="<?php echo empty($ph_no)? '' : $ph_no; ?>" aria-describedby="phoneHelpBlock">
+
+                     <small id="phoneHelpBlock" class="form-text text-danger">
+                        <?php echo !empty($err_ph_exist) ? $err_ph_exist : ''; ?>
+                     </small> 
                    </div>
+
                    <div class="form-group">
                      <label for="pwd" class="font-weight-bold">Password:</label>
+                     <span class="badge badge-pill badge-danger">Required</span>
+
                      <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="password" required="required">
                    </div>
+
                    <div class="form-group">
                      <label for="cpwd" class="font-weight-bold">Confirm Password:</label>
+                     <span class="badge badge-pill badge-danger">Required</span>
+
                      <input type="password" class="form-control" id="cpwd" placeholder="Confirm password" name="c_password" required="required" aria-describedby="passwordHelpBlock">
                      
                      <small id="passwordHelpBlock" class="form-text text-danger">
                         <?php echo !empty($err_pswd) ? $err_pswd : ''; ?>
                      </small> 
-    
-
                    </div>
+
                    <div class="form-group">
                      <label for="addrs" class="font-weight-bold">Address:</label>
-                     <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required" rows="3"></textarea>
+                     <span class="badge badge-pill badge-danger">Required</span>
+
+                     <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required" rows="3"><?php echo empty($address)? '' : $address; ?></textarea>
                    </div>
 
                    <input class="btn btn-primary" type="submit" name="submit" value="Submit">

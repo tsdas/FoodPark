@@ -19,11 +19,10 @@
 
     <div class="container">
     
-      <?php 
-        require 'include/header.php';
+      <?php require 'include/header.php'; ?>
 
-        // Check for invalid login
-        if (isset($_GET['error']) and $_GET['error'] === 'login'): ?>
+   
+      <?php if (isset($_GET['error']) and $_GET['error'] === 'login'): ?>
           
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -42,6 +41,17 @@
           
       <?php endif; ?>
 
+
+     
+     <?php if (!empty($_GET['cus_reg'])): ?>
+
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong>You've been registered successfully!</strong>
+          Now, log in to buy food
+        </div>
+
+      <?php endif; ?>
 
 
 

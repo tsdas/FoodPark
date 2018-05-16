@@ -7,13 +7,16 @@ session_start();
 if (isset($_GET['im_id'])) {
     // Cancle the order of that item
    // And recalculate the bill amount
-   foreach ($_SESSION['orders'] as $key => $order) {
-        if ($order->getID() == $_GET['im_id']) {
-            $_SESSION['total_amount'] -= $order->getAmount();
-            $item_del_msg = 'Item "' . $order->getName() . '" has been removed';
-            unset( $_SESSION['orders'][$key] );
+   if (!empty($_SESSION['orders'])) {
+        foreach ($_SESSION['orders'] as $key => $order) {
+             if ($order->getID() == $_GET['im_id']) {
+                 $_SESSION['total_amount'] -= $order->getAmount();
+                 $item_del_msg = 'Item "' . $order->getName() . '" has been removed';
+                 unset( $_SESSION['orders'][$key] );
+             }
         }
    }
+
 }
 if (isset($_POST['change'])) {
     // Change the quantity of the item

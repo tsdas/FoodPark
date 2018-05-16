@@ -3,6 +3,69 @@
 
   require_once 'include/dbcon.php';
 
+  // So that it can be accessed outside the functiion
+  $err_pswd = "";
+
+  function updateRecord($c_id, $name, $ph_no, $address, $password, $c_password, $link){
+
+    global $err_pswd;
+
+    if (empty($password) and empty($c_password)) {
+        // Only update name, ph_no and address
+
+        // Prepare an insert statement
+        $sql = "UPDATE customer SET name=?, address=?, phone_no=? WHERE c_id=?";
+
+        if($stmt = mysqli_prepare($link, $sql)){
+            // Bind variables to the prepared statement as parameters
+            mysqli_stmt_bind_param($stmt, "sssi", $name, $address, $ph_no, $c_id);
+
+            mysqli_stmt_execute($stmt);
+
+            header("Location: customer_profile.php?update=true");
+        }
+        else {
+            // DB Error
+        }
+
+    }
+    elseif (!empty($password) and !empty($c_password)) {
+        if ($password === $c_password) {
+            // Update name, ph_no, address and password
+
+            // Hash the password
+            $password = password_hash($password, PASSWORD_DEFAULT);
+
+            // Prepare an insert statement
+            $sql = "UPDATE customer SET name=?, address=?, phone_no=?, password=? WHERE c_id=?";
+
+            if($stmt = mysqli_prepare($link, $sql)){
+                // Bind variables to the prepared statement as parameters
+                mysqli_stmt_bind_param($stmt, "ssssi", $name, $address, $ph_no, $password, $c_id);
+
+                mysqli_stmt_execute($stmt);
+
+                mysqli_stmt_close($stmt);
+                mysqli_close($link);
+
+                header("Location: customer_profile.php?update=true");
+            }
+            else {
+                // DB Error
+            }
+
+        }
+        else {
+            $err_pswd = "The two passwords didn't match"; 
+        }
+    }
+    else {
+        $err_pswd = "The two passwords didn't match";
+    }
+  } 
+
+
+
   if (isset($_GET['c_id'])){
 
     $c_id = $_GET['c_id'];
@@ -28,6 +91,7 @@
     }
 
   }
+
   elseif (isset($_POST['submit'])) {
     $c_id = $_POST['c_id'];
     $name = trim($_POST['name']);
@@ -41,60 +105,37 @@
         $err_req = true;
     }
     else {
-        if (empty($password) and empty($c_password)) {
-            // Only update name, ph_no and address
 
-            // Prepare an insert statement
-            $sql = "UPDATE customer SET name=?, address=?, phone_no=? WHERE c_id=?";
+        // Verify phone number uniqueness
+        $sql="SELECT phone_no FROM customer WHERE c_id=$c_id";
+        $result = mysqli_query($link, $sql)
+            or die('DB Error');
 
-            if($stmt = mysqli_prepare($link, $sql)){
-                // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt, "sssi", $name, $address, $ph_no, $c_id);
+        $row = mysqli_fetch_assoc($result);
 
-                mysqli_stmt_execute($stmt);
+        if ($ph_no != $row['phone_no']) {
+            // Customer has changed the phone no
+            // Check if the modified phone number already exist
 
-                header("Location: customer_profile.php?update=true");
+            $sql="SELECT * FROM customer WHERE phone_no='$ph_no'";
+            $result = mysqli_query($link, $sql)
+                or die('DB Error');
+
+            if(mysqli_num_rows($result) > 0){
+                $err_ph_exist = "This phone no. has already been registered";
             }
             else {
-                // DB Error
-            }
-
-        }
-        elseif (!empty($password) and !empty($c_password)) {
-            if ($password === $c_password) {
-                // Update name, ph_no, address and password
-
-                // Hash the password
-                $password = password_hash($password, PASSWORD_DEFAULT);
-
-                // Prepare an insert statement
-                $sql = "UPDATE customer SET name=?, address=?, phone_no=?, password=? WHERE c_id=?";
-
-                if($stmt = mysqli_prepare($link, $sql)){
-                    // Bind variables to the prepared statement as parameters
-                    mysqli_stmt_bind_param($stmt, "ssssi", $name, $address, $ph_no, $password, $c_id);
-
-                    mysqli_stmt_execute($stmt);
-
-                    header("Location: customer_profile.php?update=true");
-                }
-                else {
-                    // DB Error
-                }
-
-            }
-            else {
-                $err_pswd = "The two passwords didn't match"; 
+                // The modified ph no is unique
+                updateRecord($c_id, $name, $ph_no, $address, $password, $c_password, $link);
             }
         }
         else {
-            $err_pswd = "The two passwords didn't match";
+            // The customer has not changed the phone number
+            updateRecord($c_id, $name, $ph_no, $address, $password, $c_password, $link);
         }
-
     }
  
   }
-
 
 ?>
 
@@ -148,7 +189,13 @@
                     <label for="ph_no" class="font-weight-bold">Phone Number:</label>
                     <span class="badge badge-pill badge-danger">Required</span>
 
-                    <input type="text" class="form-control" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required" value="<?php echo $ph_no ?>">
+                    <input type="text" class="form-control" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required" value="<?php echo $ph_no ?>" aria-describedby="phoneHelpBlock">
+
+                    <small id="phoneHelpBlock" class="form-text text-danger">
+                       <?php echo !empty($err_ph_exist) ? $err_ph_exist : ''; ?>
+                    </small> 
+
+
                   </div>
                   
                   <div class="form-group">
