@@ -76,7 +76,7 @@
 
     <?php if (isset($no_bill) and $no_bill === true): ?>
         <h2 class="text-muted text-center py-2 my-5">
-            You've not placed any order
+            No order on <?php echo $bill_date; ?>
         </h2>
     <?php else: ?>
         <div class="table-responsive">
@@ -96,7 +96,7 @@
                             <td> <?php echo $bill['date']; ?> </td>
                             <td> Rs. <?php echo number_format($bill['total_amount']); ?> </td>
                             <td>
-                                <?php if($bill['status'] == null): ?>
+                                <?php if($bill['status'] == NULL): ?>
                                     <strong class="text-warning"> Unpaid </strong>
 
                                 <?php elseif($bill['status'] == 1): ?>

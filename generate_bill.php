@@ -12,6 +12,8 @@
 
     if(mysqli_query($link, $sql)){
         $order_id = mysqli_insert_id($link);
+
+        date_default_timezone_set("Asia/Kolkata");
         $dat = date("Y-m-d");
 
         // Now, insert data into order_master
@@ -127,12 +129,24 @@
         }
      ?>
 
-     <div class="alert alert-info alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-         <strong>Please save this page for future reference</strong>
+     <div class="container">
+        <div class="row mt-1">
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col"></div>
+            <div class="col">
+                <button type="button" class="btn btn-primary btn-lg">Print this bill</button>
+            </div>
+          </div>
      </div>
 
-     <div class="border border-primary rounded m-3 p-3">
+
+
+
+     <div class="border border-primary rounded m-3 p-3" id="bill">
         <h3 class="text-center text-muted font-weight-bold mb-4">
             <u>Invoice : Food Park</u>
         </h3>
@@ -226,5 +240,40 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            
+            $("button").click(function(){
+
+                var data = $("#bill").html();
+
+                var mywindow = window.open("", "", 'height=500,width=700');
+                
+                mywindow.document.write("<!doctype html>");
+                mywindow.document.write('<html lang="en"><head><title>FoodPark | Print Invoice</title>');
+                mywindow.document.write("<meta charset='utf-8'>");
+
+                mywindow.document.write("<meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>");
+
+                mywindow.document.write("<link rel='stylesheet' href='css/bootstrap.min.css'>");
+                mywindow.document.write('</head><body >');
+                
+
+                mywindow.document.write("<div class='container'>");
+                mywindow.document.write(data);
+                mywindow.document.write("</div>");
+
+                mywindow.document.write('</body></html>');
+
+                mywindow.print();
+                mywindow.close();
+
+            });
+        });    
+    </script>
+
+
   </body>
 </html>
