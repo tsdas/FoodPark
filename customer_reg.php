@@ -1,5 +1,16 @@
 <?php 
+  // Starting session
+  session_start();
+
+  // Check if it's a new customer
+  if (isset($_SESSION['c_id']) or isset($_SESSION['c_name'])) {
+    // Invalid access
+    header('Location: index.php');
+  }
+
+  
   require_once 'include/dbcon.php';
+
 
   if (isset($_POST['submit'])) {
 

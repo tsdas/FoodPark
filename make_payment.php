@@ -4,6 +4,13 @@ require_once 'include/dbcon.php';
 
 session_start();
 
+// Check if it's a valid access
+if (empty($_SESSION['c_id']) or empty($_SESSION['c_name'])) {
+  // Invalid access
+  header('Location: index.php');
+}
+
+
 if (isset($_GET['im_id'])) {
     // Cancle the order of that item
    // And recalculate the bill amount

@@ -1,4 +1,13 @@
-<?php session_start(); ?>
+<?php 
+  session_start(); 
+
+  // Check if it's a valid access
+  if (empty($_SESSION['c_id']) or empty($_SESSION['c_name'])) {
+    // Invalid access
+    header('Location: index.php');
+  }
+
+?>
 
 <!doctype html>
 <html lang="en">

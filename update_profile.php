@@ -1,10 +1,18 @@
 <?php 
   session_start();
 
+  // Check if it's a valid access
+  if (empty($_SESSION['c_id']) or empty($_SESSION['c_name'])) {
+    // Invalid access
+    header('Location: index.php');
+  }
+
+  
   require_once 'include/dbcon.php';
 
   // So that it can be accessed outside the functiion
   $err_pswd = "";
+
 
   function updateRecord($c_id, $name, $ph_no, $address, $password, $c_password, $link){
 

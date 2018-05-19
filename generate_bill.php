@@ -5,6 +5,14 @@
 
   session_start();
 
+  // Check if it's a valid access
+  if (empty($_SESSION['c_id']) or empty($_SESSION['c_name'])) {
+    // Invalid access
+    header('Location: index.php');
+  }
+
+
+
   if (isset($_POST['yes'])) {
 
     // Create a unique order id for this session

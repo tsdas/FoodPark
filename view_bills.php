@@ -1,6 +1,55 @@
 <?php
+
+    // Regarding bill status:
+    // 1 --> Paid
+    // 0 --> Unpaid
+
     session_start();
+    
+    // Check if it's a valid access
+    if (empty($_SESSION['c_id']) or empty($_SESSION['c_name'])) {
+      // Invalid access
+      header('Location: index.php');
+    }
+
+
+
     require_once 'include/dbcon.php';
+
+    // Delete the order 
+    if (isset($_POST['cancel_order'])) {
+        
+        $o_id = $_POST['o_id'];
+
+        // Delete from 'order' tabel
+        $sql = "DELETE FROM `order` WHERE o_id=$o_id";
+
+        if(mysqli_query($link, $sql)){
+
+            // Now, delete from order-master tabel
+            $sql = "DELETE FROM order_master WHERE o_id=$o_id";
+            if (mysqli_query($link, $sql)) {
+
+                // Now, delete from bill tabel
+                $sql = "DELETE FROM bill WHERE o_id=$o_id";
+                if (mysqli_query($link, $sql)) {
+                    // All the records are cleared
+                    $c_order = true;
+                }
+                else {
+                    // DB Error
+                }
+            }
+            else {
+                // DB Error
+            }
+        }
+        else {
+            // DB Error
+        }
+    }
+
+
 
     if (isset($_GET['search']) and !empty($_GET['bill_date'])) {
 
@@ -52,6 +101,15 @@
       
     <?php require 'include/header.php'; ?> 
 
+
+    <?php if (isset($c_order) and $c_order === true): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <strong> Order #<?php echo $o_id; ?> has been canceled </strong>
+        </div>
+    <?php endif; ?>
+
+
     <div class="container">
         <div class="row my-2">
             <div class="col-md-7">
@@ -99,14 +157,17 @@
                             <td> <?php echo $bill['date']; ?> </td>
                             <td> Rs. <?php echo number_format($bill['total_amount']); ?> </td>
                             <td>
-                                <?php if($bill['status'] == NULL): ?>
-                                    <strong class="text-warning"> Unpaid </strong>
+                                <?php if($bill['status'] == 0): ?>
+                                    <!-- <strong class="text-warning"> Unpaid </strong> -->
 
-                                <?php elseif($bill['status'] == 1): ?>
-                                    <strong class="text-success"> Paid </strong>
+                                    <form class="form-inline" action="view_bills.php" method="POST">
+                                        <input type="hidden" name="o_id" value="<?php echo $bill['o_id']; ?>">
+                                        <button type="submit" name="cancel_order" class="btn btn-danger btn-sm">Cancel Order</button>
+                                    </form>
 
                                 <?php else: ?>
-                                    <strong class="text-danger"> Cancelled by admin </strong>
+                                    <strong class="text-success"> Paid </strong>
+
                                 <?php endif; ?>
                             </td>
                         </tr>
