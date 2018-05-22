@@ -1,18 +1,26 @@
 <?php 
   
   // Can only access by admin
+  session_start();
 
-  require_once 'include/dbcon.php';
-  require_once 'include/app_vars.php';
+  if(empty($_SESSION['a_id']) or empty($_SESSION['username'])) {
+      header("Location: index.php"); 
+  }
+
+
+  require_once '../include/dbcon.php';
+  require_once '../include/app_vars.php';
 
   if (isset($_POST['submit'])) {
 
     // Need input validation
-    $item = $_POST['i_name'];
+    $item = trim($_POST['i_name']);
     $category = $_POST['category'];
-    $price = $_POST['price'];
+    $price = trim($_POST['price']);
     $pic = $_FILES['image']['name'];
     $new_pic = date("Y-m-d h-i-s") . '_' . $pic;
+
+
 
 
     $source = $_FILES['image']['tmp_name'];
@@ -57,8 +65,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
 
     <title>Admin | Add Item</title>
   </head>
@@ -70,9 +78,9 @@
     <div class="container">
       
       <?php 
-        require_once 'include/header.php';
+        require_once '../include/admin_header.php';
      
-        if (!empty($is_ok) && $is_ok === true): ?>
+        if (!empty($is_ok)): ?>
 
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -94,6 +102,8 @@
                    
                    <div class="form-group">
                      <label for="i_name" class="font-weight-bold">Item Name:</label>
+                     <span class="badge badge-pill badge-danger">Required</span>
+
                      <input type="text" class="form-control" id="i_name" placeholder="Enter item name" name="i_name" required="required">
                    </div>
                    <div class="form-group">
@@ -106,12 +116,16 @@
                     </div>
                    <div class="form-group">
                      <label for="price" class="font-weight-bold">Price:</label>
+                     <span class="badge badge-pill badge-danger">Required</span>
+
                      <input type="text" class="form-control" id="price" placeholder="Enter price" name="price" required="required">
                    </div>
       
 
                   <div class="form-group">
                     <label for="file" class="font-weight-bold">Choose the item's image to upload: </label>
+                    <span class="badge badge-pill badge-danger">Required</span>
+
                     <input type="file" id="file" name="image" class="form-control-file" required="required">
                   </div>
                     
@@ -127,13 +141,15 @@
       </div>
 
       <?php 
-        require_once 'include/footer.php';
+        require_once '../include/footer.php';
       ?> 
 
     </div>
 
 
-    <script src="js/jquery.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/main.js"></script>
+
   </body>
 </html>

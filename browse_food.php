@@ -6,20 +6,26 @@
     session_start();
 
     if (isset($_GET['category'])) {
+
+        date_default_timezone_set("Asia/Kolkata");
+        $dat = date("Y-m-d");
+
        $category = $_GET['category'];
 
        if ($category == "veg") {
-          $sql = "SELECT * FROM item WHERE category='veg'";
+          $sql = "SELECT * FROM item WHERE category='veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat')";
        }
        elseif ($category == "non-veg") {
-          $sql = "SELECT * FROM item WHERE category='non-veg'";   
+          $sql = "SELECT * FROM item WHERE category='non-veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat')";   
        }
        elseif ($category == "other") {
-          $sql = "SELECT * FROM item WHERE category='other'";
+          $sql = "SELECT * FROM item WHERE category='other' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat')";
        }
        elseif ($category == "ts") {
-          $sql = "select item.im_id, i_name, category, price, image from item, todays_special where item.im_id=todays_special.im_id";
+          $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.im_id=todays_special.im_id AND date='$dat'";
        }
+
+
 
 
        if($result = mysqli_query($link, $sql)) {

@@ -2,32 +2,32 @@
 
 if (isset($_POST['submit'])) {
 
-require_once 'include/dbcon.php';
+require_once '../include/dbcon.php';
 
 	// Need input validation
 	$user_name = $_POST['user_name'];
 	$password = $_POST['password'];
 
-	$sql = "SELECT a_id FROM admin WHERE user_name = '$user_name' and password = '$password'";
+	$sql = "SELECT * FROM admin WHERE user_name = '$user_name' and password = '$password'";
 
 	if ($result = mysqli_query($link, $sql)) {
 		if (mysqli_num_rows($result) === 1) {
+
+			// Valid login
+
 			$row = mysqli_fetch_assoc($result);
-			{
-				// Valid login
-				session_start();
+			session_start();
 
-				$_SESSION['a_id']= $row['a_id'];
-				$_SESSION['username']= $row['user_name'];
+			$_SESSION['a_id']= $row['a_id'];
+			$_SESSION['username']= $row['user_name'];
 
-				// Send customer to his account
-				header('Location: admin_home.php');
-			}
-			
+			// Send customer to his account
+			header('Location: admin_home.php');
+		
 			}
 		else {
 			// Invalid login
-			header('Location: admin_login.php?error=login');
+			header('Location: index.php?error=login');
 		}
 	}
 	
@@ -39,9 +39,9 @@ elseif (isset($_GET['logout']) and $_GET['logout'] == true)  {
 	// Destroying session completely
 	session_destroy();
 
-	header('Location: admin_login.php');
+	header('Location: index.php');
 }
 
 else {
-	header('Location:admin_login.php');
+	header('Location:index.php');
 }

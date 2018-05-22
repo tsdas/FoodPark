@@ -55,7 +55,7 @@
         </div>
         <div class="col-md-3">
             <div class="card bg-light text-dark">
-              <img class="card-img-top" src="img/orders.jpg">
+              <img class="card-img-top" src="img/order3.png">
                <div class="card-body">
                     <h4 class="card-title">My Orders</h4>
                     <p class="card-text">Here you can review your orders</p>
