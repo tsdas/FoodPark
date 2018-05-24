@@ -106,11 +106,11 @@
                                       <th>Item</th>
                                       <th>Price</th>
 
-                                      <?php if($category === "ts"): ?>
-                                        <th> Remove from Today's Special </th>
+                                      <?php if($category != "ts"): ?>
+                                        <th>Action</th>
 
-                                      <?php else: ?>
-                                        <th> Add to Today's Special </th>
+                                      <?php else:?>
+                                        <th>Action</th>
 
                                       <?php endif; ?>
 
@@ -126,27 +126,31 @@
                                         <td><strong> <?php echo $row[1]; ?> </strong></td>
                                         <td><strong>Rs. <?php echo number_format($row[3]); ?> </strong></td>
 
-                                        <td> 
+                                        
+                                         <form  class="form-inline" method="POST" action="add_todayspecial.php">
+                                           
+                                            <input type="hidden" name="im_id" value="<?php echo $row[0];?>">
+                                            <input type="hidden" name="category" value="<?php echo $category; ?>">
+                                            <input type="hidden" name="i_name" value="<?php echo $row[1]; ?>">
 
-                                             <form  class="form-inline" method="POST" action="add_todayspecial.php">
-                                               
-                                                <input type="hidden" name="im_id" value="<?php echo $row[0];?>">
-                                                <input type="hidden" name="category" value="<?php echo $category; ?>">
-                                                <input type="hidden" name="i_name" value="<?php echo $row[1]; ?>">
 
-                                                <?php if($category === "ts"): ?>
-                                                    <input type="hidden" name="t_id" value="<?php echo $row[5]; ?>">
+                                            <?php if($category === "ts"): ?>
+                                                <input type="hidden" name="t_id" value="<?php echo $row[5]; ?>">
 
-                                                    <button class="btn btn-danger ml-5" type="submit" name="remove-ts">Remove</button>
+                                                <td>
+                                                  <button class="btn btn-danger" type="submit" name="remove-ts">Remove</button>
+                                                </td>
+                                            
+                                            <?php else: ?>
+                                                <td>
+                                                  <button class="btn btn-primary" type="submit" name="add-ts">&nbsp; Add &nbsp;</button>
+                                                </td>
                                                 
-                                                <?php else: ?>
-                                                    <button class="btn btn-primary ml-5" type="submit" name="add-ts">&nbsp; Add &nbsp;</button>
-                                                
-                                                <?php endif; ?>
-                                                 
-                                            </form>
+                                            <?php endif; ?>
+                                             
+                                        </form>
 
-                                         </td>
+                                         
                                     </tr>
 
                                    <?php endforeach; ?>

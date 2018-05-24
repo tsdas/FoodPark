@@ -1,4 +1,11 @@
-<?php session_start(); ?>
+<?php 
+    session_start(); 
+
+    if (isset($_SESSION['a_id']) and isset($_SESSION['username'])) {
+        header("Location: admin_home.php"); 
+    } 
+
+?>
 
 
 <!doctype html>

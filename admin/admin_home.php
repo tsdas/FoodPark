@@ -119,7 +119,7 @@
                 
                 <div class="card-body">
                 
-                  <a href="view_cash.php?category1=other" class="btn btn-primary">View Per Day Collection</a>
+                  <a href="cash_collection.php" class="btn btn-primary">View Per Day Collection</a>
                 </div>
               </div>
           </div>
