@@ -79,23 +79,26 @@
 
 
          <div class="container">
-          <div class="row mt-3">
-            <div class="col-md-4"></div>
-            <div class="col-md-4">
-                
-                <form  class="form-inline" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
-                    
-                    <div class="form-group">
-                        <label class="text-dark font-weight-bold" for="date">Enter Date: </label>
-                        <input class="form-control mx-2" type="date" name="date" id="date" value="<?php echo (empty($dat))? '' : $dat; ?>">    
-                    </div>
-                    
-                    <button type="submit" name="submit" class="btn btn-primary">Show</button>
+          <div class="row mt-4">
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
 
-                </form>
+            <div class="col-md-8">
+                
+               <form  class="form-inline" method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                   
+                   <div class="form-group">
+                       <label class="text-dark font-weight-bold" for="date">Enter Date: </label>
+                       <input class="form-control form-control-lg mx-2" type="date" name="date" id="date" value="<?php echo (empty($dat))? '' : $dat; ?>">    
+                   </div>
+                   
+                   <button type="submit" name="submit" class="btn btn-lg btn-primary">Show</button>
+
+               </form>
 
             </div>
-            <div class="col-md-4"></div>
+
+           
           </div>
         </div> 
 
