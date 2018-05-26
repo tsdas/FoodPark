@@ -13,16 +13,16 @@
        $category = $_GET['category'];
 
        if ($category == "veg") {
-          $sql = "SELECT * FROM item WHERE category='veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat')";
+          $sql = "SELECT * FROM item WHERE category='veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
        }
        elseif ($category == "non-veg") {
-          $sql = "SELECT * FROM item WHERE category='non-veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat')";   
+          $sql = "SELECT * FROM item WHERE category='non-veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";   
        }
        elseif ($category == "other") {
-          $sql = "SELECT * FROM item WHERE category='other' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat')";
+          $sql = "SELECT * FROM item WHERE category='other' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
        }
        elseif ($category == "ts") {
-          $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.im_id=todays_special.im_id AND date='$dat'";
+          $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.im_id=todays_special.im_id AND date='$dat' AND status=1";
        }
 
 

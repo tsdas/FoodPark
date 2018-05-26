@@ -43,12 +43,6 @@
             <a class="dropdown-item" href="browse_food.php?category=ts">Today's Special</a>
           </div>
         </li>
-  
-  
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        
         
         <?php if(isset($_SESSION['c_id'])): ?>
 

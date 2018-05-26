@@ -43,19 +43,19 @@
     <?php require '../include/admin_header.php'; ?> 
 
 
-      <?php if(isset($_SESSION["a_id"])): ?>
+    <?php if (!empty($rows)): ?>
 
        <div class="container">
            <div class="row">
 
-            <div class="col-md-2"> </div>
+            <div class="col-md-1"> </div>
 
-               <div class="col-md-8">
+               <div class="col-md-10">
             
-       <?php endif; ?>
-
-
-                    <?php if (!empty($rows)): ?>
+                
+                        <h4 class="text-muted mt-3 p-1">
+                            All the FoodPark's Registered Customers... 
+                        </h4>
 
                         <div class="table-responsive mt-4">
 
@@ -83,21 +83,21 @@
                           </div>
                   </div>
 
-                  <div class="col-md-2"> </div>
+                  <div class="col-md-1"> </div>
             </div>
         </div>
+
+
         <?php else: ?>
 
-        <h2 class="text-muted text-center m-5 p-5 "> No Customer Information Exist </h2>
+            <h2 class="text-muted text-center m-5 p-5 "> No Customer Information Exist </h2>
 
         <?php endif; ?> 
 
 
-      
       <?php require '../include/footer.php'; ?> 
 
     </div>
-
 
 
     <!-- Optional JavaScript -->

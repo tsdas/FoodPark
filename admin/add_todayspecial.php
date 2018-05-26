@@ -26,7 +26,6 @@
             // DB Error
         }
     }
-    
     elseif (isset($_POST['remove-ts'])) {
 
         $im_id = $_POST['im_id']; 
@@ -42,4 +41,10 @@
         else{
             // DB Error
         }
+    }
+    elseif( isset($_POST['update']) ) {
+        $im_id = $_POST['im_id'];
+
+        // Forward the request to update_item.php
+        include 'update_item.php'; 
     }

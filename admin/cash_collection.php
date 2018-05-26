@@ -144,7 +144,7 @@
                              </tbody>
                          </table>
 
-                         <p class="text-right pr-4">Total amount = Rs.<?php echo number_format($row['cash']); ?> </p>
+                         <p class="text-right pr-4">Total amount = Rs. <?php echo number_format($row['cash']); ?> </p>
                           
                     </div>
 

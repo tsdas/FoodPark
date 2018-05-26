@@ -138,8 +138,8 @@
             <div class="col-md-7">
 
                 <?php if (!isset($no_bill)): ?>
-                    <h4 class="text-dark mt-2">
-                        The following orders has been placed...
+                    <h4 class="text-dark mt-2 text-muted">
+                        The following orders have been placed...
                     </h4>
                 <?php endif; ?>
 

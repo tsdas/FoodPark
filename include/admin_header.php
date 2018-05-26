@@ -16,9 +16,15 @@
 
 
   <nav class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
-  
-    <a class="navbar-brand" href="../index.php">
-      <img src="../img/logo.jpg" alt="Logo" style="width:40px;" class="img-thumbnail">
+    
+    <?php if(isset($_SESSION['a_id'])): ?>
+        <a class="navbar-brand" href="admin_home.php">
+    <?php else: ?>
+        <a class="navbar-brand" href="index.php">
+
+    <?php endif; ?>
+    
+        <img src="../img/logo.jpg" alt="Logo" style="width:40px;" class="img-thumbnail">
     </a>
   
   
