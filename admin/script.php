@@ -2,7 +2,6 @@
 
 require '../include/dbcon.php';
 
-
 $sql = "SELECT COUNT(*) as unread FROM bill WHERE status=0";
 
 if($result = mysqli_query($link, $sql)){

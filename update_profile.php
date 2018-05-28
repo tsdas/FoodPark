@@ -190,16 +190,20 @@
                     <label for="name" class="font-weight-bold">Name:</label>
                     <span class="badge badge-pill badge-danger">Required</span>
 
-                    <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" required="required" value="<?php echo $name ?>">
+                    <input type="text" class="form-control" id="name" placeholder="Enter your name" name="name" required="required" value="<?php echo $name ?>" aria-describedby="name-error">
+
+                    <small id="name-error" class="form-text text-danger">
+                    </small> 
+
                   </div>
 
                   <div class="form-group">
-                    <label for="ph_no" class="font-weight-bold">Phone Number:</label>
+                    <label for="cph_no" class="font-weight-bold">Phone Number:</label>
                     <span class="badge badge-pill badge-danger">Required</span>
 
-                    <input type="text" class="form-control" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required" value="<?php echo $ph_no ?>" aria-describedby="phoneHelpBlock">
+                    <input type="text" class="form-control" id="cph_no" placeholder="Enter your phone no" name="ph_no" required="required" value="<?php echo $ph_no ?>" aria-describedby="phone-error">
 
-                    <small id="phoneHelpBlock" class="form-text text-danger">
+                    <small id="phone-error" class="form-text text-danger">
                        <?php echo !empty($err_ph_exist) ? $err_ph_exist : ''; ?>
                     </small> 
 
@@ -207,15 +211,15 @@
                   </div>
                   
                   <div class="form-group">
-                    <label for="pwd" class="font-weight-bold">New Password:</label>
-                    <input type="password" class="form-control" id="pwd" placeholder="Enter your password" name="password">
+                    <label for="pw" class="font-weight-bold">New Password:</label>
+                    <input type="password" class="form-control" id="pw" placeholder="Enter your password" name="password">
                   </div>
 
                   <div class="form-group">
                     <label for="cpwd" class="font-weight-bold">Confirm New Password:</label>
-                    <input type="password" class="form-control" id="cpwd" placeholder="Confirm password" name="c_password" aria-describedby="passwordHelpBlock" value="">
+                    <input type="password" class="form-control" id="cpwd" placeholder="Confirm password" name="c_password" aria-describedby="pwd-error" value="">
                     
-                    <small id="passwordHelpBlock" class="form-text text-danger">
+                    <small id="pwd-error" class="form-text text-danger">
                        <?php echo !empty($err_pswd) ? $err_pswd : ''; ?>
                     </small> 
                   </div>
@@ -224,7 +228,10 @@
                     <label for="addrs" class="font-weight-bold">Address:</label>
                     <span class="badge badge-pill badge-danger">Required</span>
 
-                    <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required" rows="3"><?php echo $address ?></textarea>
+                    <textarea id="addrs" class="form-control" placeholder="Enter your adderess" name="address" required="required" rows="3" aria-describedby="adds-error"><?php echo $address ?></textarea>
+
+                    <small id="adds-error" class="form-text text-danger">
+                    </small>
                   </div>
 
                   <input type="hidden" name="c_id" value="<?php echo $c_id; ?>">
@@ -248,5 +255,136 @@
     <script src="js/jquery.js"></script>
     <script src="js/popper.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
+    <script>
+        
+        $(document).ready(function(){
+
+           let nameRegex = /^[a-zA-Z ]+$/;
+           let phRegex = /^\d{10}$/;
+
+           let errName, errPh, errPwd, errAdd;
+           errName = errPwd = errPh = errAdd = false;
+
+
+           $("input#name").on('input',function(){
+                let data = $(this).val().trim();
+
+                if (data.length == 0) {
+                    errName = true;
+                    $("small#name-error").html("Please enter a name");
+
+                    $(this).focus();
+                } 
+                else {
+                    if (nameRegex.test(data) == false) {
+                        errName = true;
+                        $("small#name-error").html("Only alphabates and white space are allowed");
+
+                        $(this).focus();
+                    }
+                    else {
+                        errName = false;
+                        $("small#name-error").html("");
+                    }
+                }
+
+           });
+
+           $("input#cph_no").on('input',function(){
+                let data = $(this).val().trim();
+                let id = $('input[type="hidden"]').val().trim();
+
+
+                if (data.length == 0) {
+                    errPh = true;
+                    $("small#phone-error").html("Please Enter a phone no");
+
+                    $(this).focus();
+                } 
+                else {
+                    if (phRegex.test(data) == false) {
+                        errPh = true;
+                        $("small#phone-error").html("Phone no must be of 10 digits");
+
+                        $(this).focus();
+                    }
+                    else {
+
+                        // Check if the phone no is already registered
+                        $.get("cus_ajax.php", {ph_no: data, c_id: id}, function(res){
+                            if (res) {
+                                errPh = true;
+                                $("small#phone-error").html(res);
+
+                                $(this).focus();
+                            } 
+                            else {
+                                errPh = false;
+                                $("small#phone-error").html("");
+                            }
+                        });
+                    }
+                }
+           });
+
+
+           $("input#cpwd").blur(function(){
+                let cpw = $(this).val().trim();
+                let pw = $("input#pw").val().trim();
+
+                if (cpw.length != 0 && pw.length != 0) {
+                    if(pw != cpw) {
+                        errPwd = true;
+
+                        $("small#pwd-error").html("The passwords didn't match");
+                        $(this).focus();
+                    }
+                    else {
+                        errPwd = false;
+                        $("small#pwd-error").html("");   
+                    }
+                }
+                else if(cpw.length == 0 && pw.length == 0){
+                   errPwd = false;
+                   $("small#pwd-error").html(""); 
+                }
+                else {
+                    errPwd = true;
+
+                    $("small#pwd-error").html("The passwords didn't match");
+                    $(this).focus(); 
+                }
+
+           });
+
+
+           $("textarea").on('blur',function(){
+                let data = $(this).val().trim();
+
+                if (data.length == 0) {
+                    errAdd = true;
+                    $("small#adds-error").html("Please enter the address");
+
+                    $(this).focus();
+                } 
+                else {
+                    errAdd = false;
+                    $("small#adds-error").html("");
+                }
+
+           });
+
+           $("form#cus_reg").submit(function(e) {
+                
+                if (errName || errPh || errPwd || errAdd) {
+                    e.preventDefault();
+                } 
+           });
+
+        });
+
+    </script>
+
   </body>
 </html>

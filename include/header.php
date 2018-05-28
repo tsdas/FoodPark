@@ -93,14 +93,19 @@
        <!-- Modal body -->
        <div class="modal-body">
 
-            <form method="POST" action="customer_auth.php">
+            <form method="POST" action="customer_auth.php" id="cus_log">
                 <div class="form-group">
                   <label for="ph_no" class="font-weight-bold">Phone Number:</label>
-                  <input type="text" class="form-control form-control-sm" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required">
+                  <input type="text" class="form-control form-control-sm" id="ph_no" placeholder="Enter your phone no" name="ph_no" required="required" aria-describedby="ph-error">
+
+                  <small id="ph-error" class="form-text text-danger"></small> 
+
                 </div>
+
                 <div class="form-group">
                   <label for="pwd" class="font-weight-bold">Password:</label>
                   <input type="password" class="form-control form-control-sm" id="pwd" placeholder="Enter your password" name="password" required="required">
+ 
                 </div>
 
                 <input class="btn btn-primary" type="submit" name="submit" value="Submit">
@@ -116,3 +121,47 @@
      </div>
    </div>
  </div>
+
+
+
+
+<script type="text/javascript">
+
+    let phRegex = /^\d{10}$/;
+
+    let err_ph = false;
+    
+
+    document.querySelector("#ph_no").addEventListener('input', function(e) {
+        let data = this.value;
+
+        if (data.trim().length == 0) {
+            err_ph = true;
+            document.querySelector("#ph-error").innerHTML = "Please enter a phone no";
+
+            this.focus();
+        } 
+        else {
+            if (phRegex.test(data) == false) {
+                err_ph = true;
+                document.querySelector("#ph-error").innerHTML = "Phone No must be of 10 digits";
+
+                this.focus();
+            }
+            else {
+                err_ph = false;
+                document.querySelector("#ph-error").innerHTML = "";
+            }
+        }
+    });
+
+
+    document.querySelector("#cus_log").addEventListener('submit', function(e) {
+        if (err_ph) {
+            e.preventDefault();
+        }
+    });
+
+
+
+ </script>

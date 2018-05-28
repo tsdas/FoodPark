@@ -25,14 +25,27 @@ if (isset($_GET['im_id'])) {
    }
 
 }
+
 if (isset($_POST['change'])) {
     // Change the quantity of the item
-    // Need validation
+    
     $quantity = $_POST['quan'];
-    $index = $_POST['item_index'];
-    $item = $_SESSION['orders'][$index];
-    $item->setQuantity($quantity); 
+    $pattern = "/^\d{1,2}$/";
+
+    if (preg_match($pattern, $quantity) and ($quantity > 0 && $quantity <= 30)) {
+
+        // It's a valid quantity, change it
+        $index = $_POST['item_index'];
+        $item = $_SESSION['orders'][$index];
+        $item->setQuantity($quantity);
+
+    } 
+    else {
+        // Invalid quantity, notify the user
+        $err_quan = true; 
+    }     
 }
+
 ?>
 
 <!doctype html>
@@ -65,6 +78,17 @@ if (isset($_POST['change'])) {
     <?php endif; ?>
 
 
+    <?php if(!empty($err_quan)): ?>
+
+     <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+
+         <strong> Please enter a valid quantity </strong>  
+     </div>
+    
+    <?php endif; ?>
 
 
     <?php if (empty($_SESSION['orders'])): ?> 

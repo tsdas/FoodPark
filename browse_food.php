@@ -5,10 +5,65 @@
 
     session_start();
 
-    if (isset($_GET['category'])) {
+    date_default_timezone_set("Asia/Kolkata");
+    $dat = date("Y-m-d");
 
-        date_default_timezone_set("Asia/Kolkata");
-        $dat = date("Y-m-d");
+    if (isset($_GET['search']) and isset($_GET['category'])) {
+        $food = trim($_GET['food']);
+        $category = $_GET['category'];
+
+        if (! empty($food)) {
+            
+            if($category != "ts") {
+                $sql = "SELECT * FROM `item` WHERE i_name LIKE '$food%' and category='$category' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
+            }
+            else {
+                $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.i_name LIKE '$food%' AND item.im_id=todays_special.im_id AND date='$dat' AND status=1";
+            }
+
+            if($result = mysqli_query($link, $sql)) {
+
+                 // Fetching all the records
+                 $rows = mysqli_fetch_all($result);
+
+                 mysqli_free_result($result);
+                 mysqli_close($link);
+            } 
+            else{
+               // Redirect user to db error page
+            }
+        }
+        // Get all the items of that category
+        else {
+            if ($category == "veg") {
+               $sql = "SELECT * FROM item WHERE category='veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
+            }
+            elseif ($category == "non-veg") {
+               $sql = "SELECT * FROM item WHERE category='non-veg' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";   
+            }
+            elseif ($category == "other") {
+               $sql = "SELECT * FROM item WHERE category='other' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
+            }
+            elseif ($category == "ts") {
+               $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.im_id=todays_special.im_id AND date='$dat' AND status=1";
+            }
+
+
+            if($result = mysqli_query($link, $sql)) {
+
+                 // Fetching all the records
+                 $rows = mysqli_fetch_all($result);
+
+                 mysqli_free_result($result);
+                 mysqli_close($link);
+            } 
+            else{
+               // Redirect user to db error page
+            }
+        }
+
+    }
+    elseif (isset($_GET['category'])) {
 
        $category = $_GET['category'];
 
@@ -26,8 +81,6 @@
        }
 
 
-
-
        if($result = mysqli_query($link, $sql)) {
 
             // Fetching all the records
@@ -40,8 +93,7 @@
           // Redirect user to db error page
        }
 
-    } 
-
+    }
     
 ?>
 
@@ -89,8 +141,42 @@
 
 
 
+     <?php if(isset($_SESSION["c_id"]) and !empty($_GET['err_quan'])): ?>
+
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+             </button>
+
+          <strong> Please enter a valid quantity </strong>  
+      </div>
+     
+     <?php endif; ?> 
+
+
 
       <?php if(isset($_SESSION["c_id"])): ?>
+
+        <div class="alert alert-info" role="alert">
+            <strong> Maximum 30 of each food item is allowed </strong>  
+        </div>
+
+        <div class="container mb-2">
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <form method="GET" action="browse_food.php" class="form-inline">
+                        <input type="text" name="food" class="form-control" placeholder="Search Food" value="<?php echo (empty($food))? "" : $food ;?>">
+                        <input type="hidden" name="category" value="<?php echo $_GET['category']; ?>">
+
+                        <input type="submit" name="search" class="btn btn-primary ml-2" value="Search">
+                    </form>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+
+
 
        <div class="container">
            <div class="row">
@@ -148,12 +234,14 @@
 
                                                <?php else: ?>
 
-                                                    <form  class="form-inline" method="POST" action="take_order.php">
+                                                    <form  class="form-inline order-form" method="POST" action="take_order.php">
+
                                                      <input type="text" class="form-control form-control-sm mr-2" name="quantity">
+
+
                                                      <input type="hidden" name="im_id" value="<?php echo $row[0];?>">
                                                      <input type="hidden" name="i_name" value="<?php echo $row[1];?>">
                                                      <input type="hidden" name="price" value="<?php echo $row[3];?>">
-
                                                      <input type="hidden" name="category" value="<?php echo $category; ?>">
 
                                                       <button class="btn btn-primary" type="submit" name="buy">Order</button>
@@ -209,5 +297,6 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="js/jquery.js"></script>
     <script src="js/bootstrap.min.js"></script>
+
   </body>
 </html>

@@ -75,7 +75,7 @@
                                         
                                         <td><strong> <?php echo $row[1]; ?> </strong></td>
                                         <td><strong> <?php echo $row[2]; ?> </strong></td>
-                                        <td><strong><?php echo number_format($row[3]); ?> </strong></td>
+                                        <td><strong><?php echo $row[3]; ?> </strong></td>
                                    </tr>
                                    <?php endforeach; ?>
                               </tbody>
