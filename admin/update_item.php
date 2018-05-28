@@ -95,13 +95,15 @@
 
             <div class="col-6">
 
-                <form method="POST" action="update_item.php">
+                <form method="POST" action="update_item.php" id="update_item">
 
                   <div class="form-group">
                     <label for="i_name" class="font-weight-bold">Item Name:</label>
                     <span class="badge badge-pill badge-danger">Required</span>
 
-                    <input type="text" class="form-control" id="i_name" name="i_name" required="required" value="<?php echo $row['i_name']; ?>">
+                    <input type="text" class="form-control" id="i_name" name="i_name" required="required" value="<?php echo $row['i_name']; ?>" aria-describedby="name-error">
+
+                    <small id="name-error" class="form-text text-danger"></small>
                   </div>
 
                   <div class="form-group">
@@ -136,7 +138,9 @@
                     <label for="price" class="font-weight-bold"> Price: </label>
                     <span class="badge badge-pill badge-danger">Required</span>
 
-                    <input type="text" class="form-control" name="price" id="price" value="<?php echo $row['price']; ?>" required="required">
+                    <input type="text" class="form-control" name="price" id="price" value="<?php echo $row['price']; ?>" required="required" aria-describedby="price-error">
+
+                    <small id="price-error" class="form-text text-danger"></small>
                   </div>
 
                   <div class="form-group">
@@ -171,5 +175,80 @@
     <script src="../js/popper.js"></script>
     <script src="../js/bootstrap.min.js"></script>
     <script src="../js/main.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            let errName, errPrice;
+            errName = errPrice = false;
+
+            //Item Name Validation
+            $("input#i_name").on('input',function(){
+                 let data = $(this).val().trim();
+                 let id = $('input[type="hidden"]').val().trim();
+
+                if (data.length == 0) {
+                    errName = true;
+                    $("small#name-error").html("Please enter a food item name");
+
+                    $(this).focus();
+                } 
+                else {
+                    
+                    // Check if the food name is already entered
+                    $.get("item_script.php", {i_name: data, im_id: id}, function(res){
+                        if (res) {
+                            errName = true;
+                            $("small#name-error").html(res);
+
+                            $(this).focus();
+                        } 
+                        else {
+                            errName = false;
+                            $("small#name-error").html("");
+                        }
+                    });
+                }
+
+            });
+
+
+            //Item Price Validation
+            $("input#price").on('input',function(){
+
+                let pattern = /^\d{1,}$/;
+                let data = $(this).val().trim();
+
+                if (data.length == 0) {
+                    errPrice = true;
+                    $("small#price-error").html("Please enter the price");
+
+                    $(this).focus();
+                } 
+                else if(pattern.test(data) && parseInt(data) > 0) {
+                    errPrice = false;
+                    $("small#price-error").html("");
+                }
+                else {
+                    errPrice = true;
+                    $("small#price-error").html("Enter a valid price");
+
+                    $(this).focus();
+                }
+
+            });
+
+
+            $("form#update_item").submit(function(e) {
+                            
+                 // If any error exist, don't submit the form
+                if (errName || errPrice ) {
+                     e.preventDefault();
+                } 
+            });
+        });
+
+    </script>
+
   </body>
 </html>
