@@ -216,7 +216,7 @@
             //Item Price Validation
             $("input#price").on('input',function(){
 
-                let pattern = /^\d{1,}$/;
+                let pattern = /^\d{1,3}$/;
                 let data = $(this).val().trim();
 
                 if (data.length == 0) {

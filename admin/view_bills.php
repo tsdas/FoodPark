@@ -157,7 +157,15 @@
 
     <?php if (isset($no_bill) and $no_bill === true): ?>
         <h2 class="text-muted text-center py-2 my-5">
-            No order on <?php echo $bill_date; ?>
+            
+            <?php if(isset($bill_date)): ?>
+                No order on <?php echo $bill_date; ?>
+
+            <?php else: ?>
+                 No order has been placed yet
+
+            <?php endif; ?>
+            
         </h2>
     <?php else: ?>
         <div class="table-responsive">

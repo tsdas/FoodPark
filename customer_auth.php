@@ -45,7 +45,9 @@ elseif (isset($_GET['logout']) and $_GET['logout'] == true) {
 	session_start();
 
 	// Destroying session completely
-	session_destroy();
+	unset($_SESSION['c_id']);
+	unset($_SESSION['c_name']);
+
 
 	header('Location: index.php');
 }
