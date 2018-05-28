@@ -26,7 +26,7 @@
 
 
     // Image Validation
-    if (strpos($type,"image") >= 0 and $error == 0 and $size > 0) {
+    if (strpos($type,"image") !== false and $error == 0 and $size > 0) {
         $source = $_FILES['image']['tmp_name'];
         $destination = FP_UPLOADPATH . $new_pic;
 
@@ -46,6 +46,9 @@
 
                 // Everything is OK
                 $is_ok = true;
+
+                mysqli_stmt_close($stmt);
+                mysqli_close($link);
             }
             else {
                 // Redirect user to db error page
@@ -57,8 +60,7 @@
     }
 
 
-    mysqli_stmt_close($stmt);
-    mysqli_close($link);
+    
   }
 
 ?>
@@ -90,19 +92,11 @@
 
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong> Item <?php echo "'$item'"; ?> is added! </strong> 
+            <strong> Item <?php echo "'$item'"; $item = $price = ""; ?> is added! </strong> 
           </div>
 
       <?php endif; ?>
 
-
-    <?php if(!empty($file_error)): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          <button type="button" class="close" data-dismiss="alert">&times;</button>
-          <strong>Invalid file type</strong> 
-        </div>        
-    <?php endif; ?>
-      
 
       <div class="form-container">
         <div class="row">
@@ -118,7 +112,7 @@
                      <label for="i_name" class="font-weight-bold">Item Name:</label>
                      <span class="badge badge-pill badge-danger">Required</span>
 
-                     <input type="text" class="form-control" id="i_name" placeholder="Enter item name" name="i_name" required="required" aria-describedby="name-error">
+                     <input type="text" class="form-control" id="i_name" placeholder="Enter item name" name="i_name" required="required" aria-describedby="name-error" value="<?php echo (empty($item)) ? '' : $item ?>">
 
                      <small id="name-error" class="form-text text-danger"></small>
 
@@ -137,7 +131,7 @@
                      <label for="price" class="font-weight-bold">Price:</label>
                      <span class="badge badge-pill badge-danger">Required</span>
 
-                     <input type="text" class="form-control" id="price" placeholder="Enter price" name="price" required="required" aria-describedby="price-error">
+                     <input type="text" class="form-control" id="price" placeholder="Enter price" name="price" required="required" aria-describedby="price-error" value="<?php echo (empty($price)) ? '' : $price ?>">
 
                      <small id="price-error" class="form-text text-danger"></small>
                    </div>
@@ -149,7 +143,11 @@
 
                     <input type="file" id="file" name="image" class="form-control-file" required="required" aria-describedby="file-error">
 
-                    <small id="file-error" class="form-text text-danger"></small>
+                    <small id="file-error" class="form-text text-danger">
+                      <?php if(!empty($file_error)): ?>
+                          Select a valid image file
+                      <?php endif; ?>
+                    </small>
                   </div>
                     
                   <input class="btn btn-primary" type="submit" name="submit" value="Submit">
@@ -237,7 +235,7 @@
 
 
             //Image format validation
-            $('input[type="file"]').on('input',function(){
+            /*$('input[type="file"]').on('input',function(){
 
                 //Valid image file formats
                 // Also needs backend validation
@@ -256,7 +254,7 @@
                     $("small#file-error").html("Enter a valid image");
                 }
 
-            });
+            });*/
 
 
             $("form#add_item").submit(function(e) {
