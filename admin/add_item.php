@@ -31,7 +31,7 @@
         $destination = FP_UPLOADPATH . $new_pic;
 
         // moving the image from 'temp' folder into ../img/item
-        if (move_uploaded_file($source, $destination)) {
+        if (move_uploaded_file($source, '../'.$destination)) {
 
             // Prepare an insert statement
             $sql = "INSERT INTO item (i_name, category, price, image) VALUES (?, ?, ?, ?)";
