@@ -15,10 +15,10 @@
         if (! empty($food)) {
             
             if($category != "ts") {
-                $sql = "SELECT * FROM `item` WHERE i_name LIKE '$food%' and category='$category' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
+                $sql = "SELECT * FROM `item` WHERE i_name LIKE '%$food%' and category='$category' AND im_id NOT IN (SELECT im_id FROM todays_special WHERE date='$dat') AND status=1";
             }
             else {
-                $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.i_name LIKE '$food%' AND item.im_id=todays_special.im_id AND date='$dat' AND status=1";
+                $sql = "SELECT item.im_id, i_name, category, price, image FROM item, todays_special WHERE item.i_name LIKE '%$food%' AND item.im_id=todays_special.im_id AND date='$dat' AND status=1";
             }
 
             if($result = mysqli_query($link, $sql)) {

@@ -235,7 +235,7 @@
 
 
             //Image format validation
-            /*$('input[type="file"]').on('input',function(){
+            $('input[type="file"]').on('input',function(){
 
                 //Valid image file formats
                 // Also needs backend validation
@@ -254,7 +254,7 @@
                     $("small#file-error").html("Enter a valid image");
                 }
 
-            });*/
+            });
 
 
             $("form#add_item").submit(function(e) {
